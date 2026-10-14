@@ -130,7 +130,15 @@
     "notReady": "Les outils photo ne sont pas encore prêts. Réessaie dans un instant, ou garde la photo telle quelle.",
     "unavailable": "Le détourage automatique n'est disponible que dans la version complète de l'app. Tu peux quand même garder la photo telle quelle.",
     "unavailableWeb": "Ce navigateur ne permet pas le détourage automatique. Tu peux quand même garder la photo telle quelle.",
-    "colorRequired": "Choisis une couleur."
+    "colorRequired": "Choisis une couleur.",
+    "rotate": "Pivoter",
+    "crop": "Recadrer",
+    "cropTitle": "Recadrer",
+    "cropDone": "OK",
+    "cropCancel": "Annuler",
+    "cropReset": "Réinitialiser",
+    "undoEdits": "Annuler les retouches",
+    "adjustFailed": "Impossible de retoucher la photo. Réessaie."
   },
   "item": {
     "category": "Catégorie",

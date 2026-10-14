@@ -187,3 +187,59 @@ describe('failMessageKey', () => {
     expect(fr.add.unavailableWeb).toMatch(/navigateur/);
   });
 });
+
+describe('addItemReducer adjustments', () => {
+  function review(state: AddState) {
+    if (state.step !== 'review') throw new Error(`expected review, got ${state.step}`);
+    return state;
+  }
+  const toReview: AddEvent[] = [
+    { type: 'picked', uri: 'file:///orig.jpg', size: { width: 3000, height: 4000 } },
+    { type: 'processed', prepared },
+  ];
+  const rotated: AddEvent = {
+    type: 'adjusted',
+    uri: 'file:///cache/orig-r.jpg',
+    size: { width: 4000, height: 3000 },
+    cutoutUri: 'file:///cache/cut-r.png',
+  };
+
+  it('swaps in the edited photo and cut-out, as PNG, and keeps the tags', () => {
+    const before = review(run([...toReview, { type: 'edit', patch: { warmth: 3 } }]));
+    const after = review(addItemReducer(before, rotated));
+    expect(after.uri).toBe('file:///cache/orig-r.jpg');
+    expect(after.size).toEqual({ width: 4000, height: 3000 });
+    expect(after.prepared).toMatchObject({ cutoutUri: 'file:///cache/cut-r.png', cutoutFormat: 'png', originalUri: 'file:///cache/orig-r.jpg' });
+    expect(after.tags).toEqual(before.tags);
+  });
+
+  it('remembers the first version so reset brings it back after several edits', () => {
+    const second: AddEvent = { ...rotated, uri: 'file:///cache/orig-c.jpg', cutoutUri: 'file:///cache/cut-c.png' };
+    const edited = review(run([...toReview, rotated, second]));
+    expect(edited.pristine).toMatchObject({ uri: 'file:///orig.jpg', prepared });
+    const reset = review(addItemReducer(edited, { type: 'resetAdjust' }));
+    expect(reset.uri).toBe('file:///orig.jpg');
+    expect(reset.size).toEqual({ width: 3000, height: 4000 });
+    expect(reset.prepared).toEqual(prepared);
+    expect(reset.pristine).toBeUndefined();
+  });
+
+  it('edits only the photo when there is no cut-out', () => {
+    const plain = review(
+      run([
+        { type: 'picked', uri: 'file:///orig.jpg' },
+        { type: 'failed', code: 'ERR_NO_SUBJECT', now: 0 },
+        { type: 'useAnyway' },
+        { ...rotated, cutoutUri: null },
+      ]),
+    );
+    expect(plain.uri).toBe('file:///cache/orig-r.jpg');
+    expect(plain.prepared).toBeNull();
+  });
+
+  it('ignores edits and resets outside review', () => {
+    expect(addItemReducer(initialAddState, rotated)).toBe(initialAddState);
+    const fresh = review(run(toReview));
+    expect(addItemReducer(fresh, { type: 'resetAdjust' })).toBe(fresh);
+  });
+});

@@ -9,6 +9,10 @@ import { StatusBar } from 'expo-status-bar';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CropEditor } from '../src/closet/CropEditor';
+import { isFullCrop } from '../src/closet/cropMath';
+import { adjustImage } from '../src/photo/adjust';
+import type { ImageEdit } from '../src/photo/adjust';
 import { saveNewItem } from '../src/closet/addItem';
 import { addItemReducer, failMessageKey, initialAddState } from '../src/closet/addItemReducer';
 import type { AddState, DraftTags, PhotoSize } from '../src/closet/addItemReducer';
@@ -87,6 +91,18 @@ export default function AddItem() {
   const cutout = useRef<string | null>(null);
   const picked = useRef<string | null>(null);
   const saved = useRef(false);
+  const edits = useRef(new Set<string>());
+  const pristineCutout = useRef<string | null>(null);
+  const [adjusting, setAdjusting] = useState(false);
+  const [cropping, setCropping] = useState(false);
+  const [adjustError, setAdjustError] = useState<string | null>(null);
+
+  function discardEdits(keep: (string | null)[] = []) {
+    for (const uri of edits.current) if (!keep.includes(uri)) removeFile(uri);
+    edits.current = new Set([...edits.current].filter((uri) => keep.includes(uri)));
+    if (pristineCutout.current && !keep.includes(pristineCutout.current)) removeFile(pristineCutout.current);
+    pristineCutout.current = null;
+  }
 
   useEffect(() => {
     cutout.current = cutoutOf(state);
@@ -103,6 +119,7 @@ export default function AddItem() {
     return () => {
       if (saved.current || savingRef.current) return;
       if (cutout.current) removeFile(cutout.current);
+      discardEdits();
       releasePicked(picked.current);
     };
   }, []);
@@ -156,7 +173,51 @@ export default function AddItem() {
     }
   }
 
+  async function adjust(edit: ImageEdit) {
+    if (state.step !== 'review' || adjusting) return;
+    setAdjusting(true);
+    setAdjustError(null);
+    const made: string[] = [];
+    try {
+      const cutoutOnly = edit.kind === 'crop' && state.prepared !== null;
+      const photo = cutoutOnly
+        ? { uri: state.uri, width: state.size?.width ?? 0, height: state.size?.height ?? 0 }
+        : await adjustImage(state.uri, edit, 'jpeg');
+      if (!cutoutOnly) made.push(photo.uri);
+      const cut = state.prepared ? await adjustImage(state.prepared.cutoutUri, edit, 'png') : null;
+      if (cut) made.push(cut.uri);
+      if (!state.pristine && state.prepared) pristineCutout.current = state.prepared.cutoutUri;
+      for (const uri of cutoutOnly ? [state.prepared?.cutoutUri] : [state.uri, state.prepared?.cutoutUri]) {
+        if (uri && edits.current.has(uri)) {
+          removeFile(uri);
+          edits.current.delete(uri);
+        }
+      }
+      for (const uri of made) edits.current.add(uri);
+      dispatch({
+        type: 'adjusted',
+        uri: photo.uri,
+        size: photo.width > 0 && photo.height > 0 ? { width: photo.width, height: photo.height } : state.size,
+        cutoutUri: cut?.uri ?? null,
+      });
+    } catch {
+      for (const uri of made) removeFile(uri);
+      setAdjustError(t('add.adjustFailed'));
+    } finally {
+      setAdjusting(false);
+    }
+  }
+
+  function undoEdits() {
+    if (state.step !== 'review' || !state.pristine) return;
+    const keep = [state.pristine.uri, state.pristine.prepared?.cutoutUri ?? null];
+    discardEdits(keep);
+    setAdjustError(null);
+    dispatch({ type: 'resetAdjust' });
+  }
+
   function retake() {
+    discardEdits();
     if (cutout.current) removeFile(cutout.current);
     releasePicked(picked.current);
     setSaveError(null);
@@ -183,6 +244,7 @@ export default function AddItem() {
       );
       saved.current = true;
       if (state.prepared) removeFile(state.prepared.cutoutUri);
+      discardEdits();
       releasePicked(state.uri);
       router.back();
     } catch {
@@ -240,6 +302,48 @@ export default function AddItem() {
               </View>
             )}
           </Stage>
+          <View style={styles.tools}>
+            <Button
+              label={t('add.rotate')}
+              icon="refresh-outline"
+              variant="secondary"
+              onPress={() => adjust({ kind: 'rotate' })}
+              blocked={adjusting || saving}
+              style={styles.tool}
+            />
+            <Button
+              label={t('add.crop')}
+              icon="crop-outline"
+              variant="secondary"
+              onPress={() => setCropping(true)}
+              blocked={adjusting || saving}
+              style={styles.tool}
+            />
+          </View>
+          {(state.pristine || adjustError) && (
+            <View style={styles.toolNote}>
+              {adjustError && (
+                <Text style={[type.caption, styles.error]} accessibilityLiveRegion="polite">
+                  {adjustError}
+                </Text>
+              )}
+              {state.pristine && (
+                <Button label={t('add.undoEdits')} variant="text" onPress={undoEdits} blocked={adjusting || saving} />
+              )}
+            </View>
+          )}
+          {cropping && (
+            <CropEditor
+              visible
+              uri={state.prepared?.cutoutUri ?? state.uri}
+              aspect={state.size ? state.size.width / state.size.height : 1}
+              onCancel={() => setCropping(false)}
+              onDone={(crop) => {
+                setCropping(false);
+                if (!isFullCrop(crop)) adjust({ kind: 'crop', crop });
+              }}
+            />
+          )}
           <TagEditor tags={tags} onChange={(patch) => dispatch({ type: 'edit', patch })} />
         </ScrollView>
         <View style={styles.bottomBar}>
@@ -355,4 +459,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.paper,
   },
   error: { color: colors.danger },
+  tools: { flexDirection: 'row', gap: space(12), marginTop: -space(12) },
+  tool: { flex: 1 },
+  toolNote: { alignItems: 'center', gap: space(4), marginTop: -space(16) },
 });

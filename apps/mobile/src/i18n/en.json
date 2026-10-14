@@ -130,7 +130,15 @@
     "notReady": "The photo tools are not ready yet. Try again in a moment, or use the photo as is.",
     "unavailable": "Background removal needs the full app build. You can still save the photo as is.",
     "unavailableWeb": "Background removal isn't supported in this browser. You can still save the photo as is.",
-    "colorRequired": "Choose a color."
+    "colorRequired": "Choose a color.",
+    "rotate": "Rotate",
+    "crop": "Crop",
+    "cropTitle": "Crop",
+    "cropDone": "Done",
+    "cropCancel": "Cancel",
+    "cropReset": "Reset",
+    "undoEdits": "Undo edits",
+    "adjustFailed": "Couldn't edit the photo. Try again."
   },
   "item": {
     "category": "Category",

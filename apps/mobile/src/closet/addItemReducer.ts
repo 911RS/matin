@@ -45,7 +45,14 @@ export type AddState = Base &
   (
     | { step: 'choose' }
     | { step: 'processing'; uri: string; size: PhotoSize | null; delayMs: number; preparing: boolean; attempt: number }
-    | { step: 'review'; uri: string; size: PhotoSize | null; prepared: PreparedPhoto | null; tags: DraftTags }
+    | {
+        step: 'review';
+        uri: string;
+        size: PhotoSize | null;
+        prepared: PreparedPhoto | null;
+        tags: DraftTags;
+        pristine?: ReviewPhoto;
+      }
     | { step: 'failed'; uri: string; size: PhotoSize | null; reason: FailReason }
   );
 
@@ -57,7 +64,15 @@ export type AddEvent =
   | { type: 'retry' }
   | { type: 'useAnyway' }
   | { type: 'retake' }
-  | { type: 'edit'; patch: Partial<DraftTags> };
+  | { type: 'edit'; patch: Partial<DraftTags> }
+  | { type: 'adjusted'; uri: string; size: PhotoSize | null; cutoutUri: string | null }
+  | { type: 'resetAdjust' };
+
+export interface ReviewPhoto {
+  uri: string;
+  size: PhotoSize | null;
+  prepared: PreparedPhoto | null;
+}
 
 const DEFAULT_TAGS: DraftTags = {
   category: null,
@@ -172,5 +187,19 @@ export function addItemReducer(state: AddState, event: AddEvent): AddState {
     case 'edit':
       if (state.step !== 'review') return state;
       return { ...state, tags: { ...state.tags, ...event.patch } };
+    case 'adjusted': {
+      if (state.step !== 'review') return state;
+      const pristine = state.pristine ?? { uri: state.uri, size: state.size, prepared: state.prepared };
+      const prepared =
+        state.prepared && event.cutoutUri
+          ? { ...state.prepared, cutoutUri: event.cutoutUri, cutoutFormat: 'png' as const, originalUri: event.uri }
+          : state.prepared;
+      return { ...state, uri: event.uri, size: event.size, prepared, pristine };
+    }
+    case 'resetAdjust': {
+      if (state.step !== 'review' || !state.pristine) return state;
+      const { pristine, ...rest } = state;
+      return { ...rest, uri: pristine.uri, size: pristine.size, prepared: pristine.prepared };
+    }
   }
 }

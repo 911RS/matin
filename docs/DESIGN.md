@@ -77,6 +77,7 @@ Screen side padding is 20. Controls are 50 high; touch targets are at least 44.
 - **Closet:** large title with the count on the right, chip filters, colour dots, a 3-column grid of `tile` tiles (2 columns under 360 pt), round ink add button.
 - **Item:** garment on a `tile` card, wear stats, tag chips grouped under section headers.
 - **Add piece:** `tile` preview card, primary Take a photo, secondary Choose from library.
+- **Review a new piece:** Rotate (90° clockwise, applied to the cut-out and the original) and Crop (cut-out only, since it is trimmed to the garment; the photo when there is no cut-out) under the preview, plus Undo edits once anything changed. The crop editor is full screen on ink with the image on `tile`, white corner handles, a rule-of-thirds grid, Cancel / Done on top and Reset below.
 - **History:** month as a large title with round arrow buttons; white rounded day cells; worn days sit on `tile` and show the hero piece; today has a graphite ring, the selected day an ink ring; the chosen day's pieces below.
 - **Settings:** inset grouped lists under uppercase section headers.
 - **Onboarding and sign-in:** art on a `tile` card; dashed slots fill with cut-outs as pieces are added.
