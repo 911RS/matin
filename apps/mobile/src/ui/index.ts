@@ -14,7 +14,5 @@ export { Group, Row } from './Row';
 export type { RowTone } from './Row';
 export { Sheet } from './Sheet';
 export { Field } from './Field';
-export { Slot } from './Slot';
 export { SegmentedControl } from './SegmentedControl';
-export { Card } from './Card';
 export { haptic } from './haptics';

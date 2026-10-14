@@ -32,7 +32,7 @@ Each line: what was decided, why, and what it costs if wrong.
 
 ## App
 - The app is called Matin (renamed from Tenue on the user's request). App id `com.matinwear.app`, scheme `matin://`. Internal package names (`@tenue/*`) and storage prefixes keep "tenue".
-- Visual design follows docs/DESIGN.md (flat, Instrument Sans, cobalt accent, tinted stage); it replaced the original plan tokens on the user's request.
+- Visual design follows docs/DESIGN.md (paper and ink, system font, iOS controls, garments on a `tile` shelf); it replaced earlier directions on the user's request.
 - Guest mode: the app works without an account (local store, local daily reminder). "Create an account" migrates local data; settings are copied only into a fresh cloud account.
 - A build without Supabase configuration runs as guest instead of showing a "not configured" screen.
 - Mutations pause offline for Supabase and run immediately for local repos; all writes share one ordered queue, and uploads self-heal after restarts.

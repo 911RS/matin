@@ -68,7 +68,7 @@ Screen side padding is 20. Controls are 50 high; touch targets are at least 44.
 - **Group / Row:** inset grouped list: white, radius 12, separators inset 16 from the left. Section headers use `eyebrow`.
 - **Sheet:** white, top radius 20, 36×5 grabber.
 - **Field:** white, radius 12, no border until focused (1 px ink).
-- **Slot:** dashed `line` placeholder with an `eyebrow` label, for empty outfit and onboarding slots.
+- **Placeholder slots:** dashed `line` outlines with an `eyebrow` label, drawn by the outfit stack and the onboarding preview for missing pieces.
 - **Tab bar:** paper with a hairline on top; filled icon in ink when selected, outline icon in graphite otherwise.
 
 ## Screens
@@ -77,7 +77,7 @@ Screen side padding is 20. Controls are 50 high; touch targets are at least 44.
 - **Closet:** large title with the count on the right, chip filters, colour dots, a 3-column grid of `tile` tiles (2 columns under 360 pt), round ink add button.
 - **Item:** garment on a `tile` card, wear stats, tag chips grouped under section headers.
 - **Add piece:** `tile` preview card, primary Take a photo, secondary Choose from library.
-- **History:** month as a large title with round arrow buttons; white rounded day cells, worn days show the hero piece, selected day has a 2 px ink ring; the chosen day's pieces below.
+- **History:** month as a large title with round arrow buttons; white rounded day cells; worn days sit on `tile` and show the hero piece; today has a graphite ring, the selected day an ink ring; the chosen day's pieces below.
 - **Settings:** inset grouped lists under uppercase section headers.
 - **Onboarding and sign-in:** art on a `tile` card; dashed slots fill with cut-outs as pieces are added.
 

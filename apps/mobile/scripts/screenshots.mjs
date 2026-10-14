@@ -1,4 +1,4 @@
-// Builds the web app in demo mode, captures Today, Closet and History at iPhone size,
+// Builds the web app in demo mode into dist-web (overwriting it, without models or service worker), captures Today, Closet and History at iPhone size,
 // frames each one with a caption and writes docs/screenshots/*.webp.
 // Needs Chromium: set CHROME to its path (defaults to the newest Playwright cache build) and Python with Pillow.
 import { execFileSync } from 'node:child_process';
@@ -46,8 +46,8 @@ const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'applic
 
 function serve() {
   const server = createServer((req, res) => {
-    let file = join(dist, decodeURIComponent(new URL(req.url, 'http://x').pathname));
-    if (!existsSync(file) || statSync(file).isDirectory()) file = join(dist, 'index.html');
+    let file = resolve(dist, '.' + decodeURIComponent(new URL(req.url, 'http://x').pathname));
+    if (!file.startsWith(dist + '/') || !existsSync(file) || statSync(file).isDirectory()) file = join(dist, 'index.html');
     res.writeHead(200, { 'Content-Type': TYPES[extname(file)] ?? 'application/octet-stream' });
     createReadStream(file).pipe(res);
   });

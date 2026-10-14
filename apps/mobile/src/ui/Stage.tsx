@@ -4,7 +4,6 @@ import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import { radius } from '../theme';
 
 type Props = Pick<ViewProps, 'accessibilityElementsHidden' | 'importantForAccessibility'> & {
-  tint?: string;
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
 };

@@ -25,7 +25,13 @@ function Segment<K extends string>({ option, selected, onPress }: { option: Opti
       {...focusProps}
       style={[styles.segment, selected && styles.selected]}
     >
-      <Text style={[type.label, styles.label, selected && styles.selectedLabel]} numberOfLines={1}>
+      <Text
+        style={[type.label, styles.label, selected && styles.selectedLabel]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+        maxFontSizeMultiplier={1.4}
+      >
         {option.label}
       </Text>
       {focused && <FocusRing radius={SEGMENT_RADIUS} />}

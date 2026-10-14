@@ -61,6 +61,6 @@ export function ColorChoices({ label, families, labelFor, value, onChange }: Col
 
 const styles = StyleSheet.create({
   group: { gap: space(12) },
-  wrap: { flexDirection: 'row', flexWrap: 'wrap', columnGap: space(20), rowGap: space(4) },
+  wrap: { flexDirection: 'row', flexWrap: 'wrap', gap: space(8) },
   dots: { gap: space(4), marginLeft: -space(4) },
 });

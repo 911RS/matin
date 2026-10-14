@@ -71,7 +71,7 @@ function Day({ cell, size, worn, isToday, selected, future, onPress }: CellProps
   const hero = worn ? heroOf(worn.items) : undefined;
   const source = useItemImage(hero?.image_path ?? null);
   const day = longDay(cell.date, i18n.language);
-  const ring = selected ? colors.ink : null;
+  const ring = selected ? colors.ink : isToday ? colors.graphite : null;
   const slop = Math.max(0, Math.ceil((44 - size) / 2));
 
   return (
@@ -86,7 +86,7 @@ function Day({ cell, size, worn, isToday, selected, future, onPress }: CellProps
       style={[
         styles.cell,
         { width: size, height: size },
-        !future && styles.filled,
+        !future && (worn ? styles.shelf : styles.filled),
       ]}
     >
       {worn && source ? (
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   weekday: { textAlign: 'center', paddingBottom: space(4) },
   cell: { borderRadius: radius.cell, alignItems: 'center', justifyContent: 'center' },
   filled: { backgroundColor: colors.surface },
+  shelf: { backgroundColor: colors.tile },
   cellImage: { position: 'absolute', top: space(4), left: space(4), right: space(4), bottom: space(4) },
   number: { textAlign: 'center' },
   todayNumber: { color: colors.ink },

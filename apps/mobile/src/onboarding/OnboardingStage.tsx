@@ -73,7 +73,7 @@ export function OnboardingStage({ items, compact = false }: Props) {
                 },
               ]}
             >
-              {item ? <Cutout item={item} /> : <Text style={type.eyebrow}>{t(`category.${frame.id}`)}</Text>}
+              {item ? <Cutout item={item} /> : <Text style={type.eyebrow} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>{t(`category.${frame.id}`)}</Text>}
             </View>
           );
         })}
