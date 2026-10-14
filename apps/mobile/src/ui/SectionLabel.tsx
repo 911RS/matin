@@ -5,7 +5,7 @@ import { useType } from './typeContext';
 export function SectionLabel({ children }: { children: string }) {
   const type = useType();
   return (
-    <Text style={[type.label, styles.label]} accessibilityRole="header">
+    <Text style={[type.eyebrow, styles.label]} accessibilityRole="header">
       {children}
     </Text>
   );

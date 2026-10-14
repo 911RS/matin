@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
-  <rect width="1024" height="1024" fill="#2B4BDB"/>
+  <rect width="1024" height="1024" fill="#F7F6F2"/>
   <clipPath id="up"><rect x="0" y="0" width="1024" height="700"/></clipPath>
-  <circle cx="512" cy="700" r="320" fill="#F5BE48" clip-path="url(#up)"/>
-  <path d="M512 318 C 512 262, 586 262, 586 318 C 586 358, 512 368, 512 418" fill="none" stroke="#F4F5F3" stroke-width="38" stroke-linecap="round"/>
-  <path d="M512 418 L798 640 Q824 660 798 680 L226 680 Q200 660 226 640 Z" fill="none" stroke="#F4F5F3" stroke-width="42" stroke-linejoin="round"/>
-  <rect x="150" y="736" width="724" height="30" rx="15" fill="#F4F5F3" opacity="0.35"/>
+  <circle cx="512" cy="700" r="320" fill="#E8DCC4" clip-path="url(#up)"/>
+  <path d="M512 318 C 512 262, 586 262, 586 318 C 586 358, 512 368, 512 418" fill="none" stroke="#1F1F1C" stroke-width="38" stroke-linecap="round"/>
+  <path d="M512 418 L798 640 Q824 660 798 680 L226 680 Q200 660 226 640 Z" fill="none" stroke="#1F1F1C" stroke-width="42" stroke-linejoin="round"/>
+  <rect x="150" y="736" width="724" height="30" rx="15" fill="#1F1F1C"/>
 </svg>

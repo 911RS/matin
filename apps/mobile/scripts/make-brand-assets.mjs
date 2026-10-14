@@ -12,13 +12,14 @@ const images = join(root, 'assets/images');
 const icons = join(root, 'public/icons');
 mkdirSync(icons, { recursive: true });
 
-const COBALT = '#2B4BDB';
+const PAPER = '#F7F6F2';
+const INK = '#1F1F1C';
 const svg = readFileSync(join(root, 'assets/brand/icon.svg'), 'utf8');
 const body = svg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 const mark = body.replace(/<rect width="1024" height="1024"[^>]*\/>/, '');
 const HORIZON = /<rect x="150" y="736"[^>]*\/>/;
 // Layers drawn over a transparent background must not rely on opacity: Android blends it dark.
-const markOpaque = mark.replace(HORIZON, '<rect x="150" y="736" width="724" height="30" rx="15" fill="#7187E4"/>');
+const markOpaque = mark.replace(HORIZON, `<rect x="150" y="736" width="724" height="30" rx="15" fill="${INK}"/>`);
 const markNoHorizon = mark.replace(HORIZON, '');
 
 // The mark's visible bounds are roughly x 150-874, y 243-766; centre it and scale it.
@@ -47,7 +48,7 @@ const sheets = {
   full: svg,
   foreground: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">${centered(SAFE, markOpaque)}</svg>`,
   splash: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">${centered(SAFE, markNoHorizon)}</svg>`,
-  maskable: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="${COBALT}"/>${centered(SAFE)}</svg>`,
+  maskable: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><rect width="1024" height="1024" fill="${PAPER}"/>${centered(SAFE)}</svg>`,
   monochrome: monochrome(SAFE),
   notification: monochrome(NOTIFICATION),
 };

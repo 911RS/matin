@@ -27,7 +27,7 @@ const filled = (variant: ButtonVariant) => variant === 'primary' || variant === 
 function foreground(variant: ButtonVariant, disabled: boolean): string {
   if (variant === 'text') return colors.graphite;
   if (disabled) return colors.graphite;
-  if (variant === 'primary' || variant === 'danger') return colors.onAccent;
+  if (variant === 'primary' || variant === 'danger') return colors.paper;
   if (variant === 'danger-text') return colors.danger;
   return colors.ink;
 }
@@ -77,26 +77,26 @@ export function Button({
         </Text>
       </View>
       {loading && <ActivityIndicator style={StyleSheet.absoluteFill} color={color} />}
-      {focused && <FocusRing radius={radius.round} />}
+      {focused && <FocusRing radius={radius.control} />}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: radius.round,
+    borderRadius: radius.control,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: space(24),
   },
-  filled: { height: size.control, borderWidth: 1, borderColor: 'transparent' },
+  filled: { height: size.control },
   bare: { minHeight: 44, paddingHorizontal: space(16) },
-  primary: { backgroundColor: colors.accent, borderColor: colors.accent },
-  secondary: { backgroundColor: colors.surface, borderColor: colors.line },
-  danger: { backgroundColor: colors.danger, borderColor: colors.danger },
-  disabled: { backgroundColor: colors.tile, borderColor: colors.tile },
+  primary: { backgroundColor: colors.ink },
+  secondary: { backgroundColor: colors.tile },
+  danger: { backgroundColor: colors.danger },
+  disabled: { backgroundColor: colors.tile },
   blocked: { opacity: 0.5 },
-  pressed: { opacity: 0.85 },
+  pressed: { opacity: 0.85, transform: [{ scale: 0.97 }] },
   content: { flexDirection: 'row', alignItems: 'center', gap: space(8) },
   hidden: { opacity: 0 },
 });

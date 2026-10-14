@@ -24,17 +24,17 @@
 
 Matin picks your outfit each morning. You photograph your clothes once, the app cuts each piece out of its background, and every day it suggests an outfit from your closet based on the local weather and what you wore recently. You can swap a piece, shuffle the whole outfit, and mark it as worn. A daily push reminds you at the time you choose.
 
-The interface is deliberately minimal: one screen per job, one accent colour, no feeds, no streaks, no shopping. It is made for people who own fewer clothes and want to spend less time deciding what to wear.
+The interface is deliberately minimal: one screen per job, no accent colour, no feeds, no streaks, no shopping. It is made for people who own fewer clothes and want to spend less time deciding what to wear.
 
 <p align="center">
-  <img src="docs/screenshots/today.webp" width="250" alt="Today: the suggested outfit on a coloured stage, with the weather and occasion chips">
-  <img src="docs/screenshots/closet.webp" width="250" alt="Closet: every piece as a cut-out, filterable by category and colour">
-  <img src="docs/screenshots/history.webp" width="250" alt="History: a calendar of the outfits worn this month">
+  <img src="docs/screenshots/today.webp" width="260" alt="Today: the suggested outfit laid flat on a card, with the weather, a Today/Tomorrow switch and the occasion">
+  <img src="docs/screenshots/closet.webp" width="260" alt="Closet: every piece as a cut-out, filterable by category and colour">
+  <img src="docs/screenshots/history.webp" width="260" alt="History: a calendar of the outfits worn this month">
 </p>
 
 ## Features
 
-- **Minimalist by design.** Flat colour fields, one typeface and a single cobalt accent. Your clothes are the only thing that stands out.
+- **Minimalist and native.** Paper, ink and white cards, the iPhone's own font, iOS controls and light haptics. Your clothes are the only colour on screen.
 - **Photo to cut-out.** Background removal, dominant colour and labels run on the device (Vision on iOS, ML Kit on Android, MediaPipe on the web). Nothing is uploaded for processing; photos only leave the phone if you sign in to sync.
 - **Weather-aware suggestions.** The outfit engine reads the forecast (MET Norway) and adds a coat when it is cold or skips the jacket when it is warm.
 - **Variety.** It avoids pieces you wore recently and explains each pick in one short line.

@@ -4,7 +4,8 @@ import { Platform } from 'react-native';
 import type { ColorValue } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors } from '../../src/theme';
+import { colors, hairline } from '../../src/theme';
+import { haptic } from '../../src/ui/haptics';
 import { useType } from '../../src/ui/typeContext';
 
 type TabIcon = 'sunny' | 'shirt' | 'calendar' | 'settings';
@@ -24,14 +25,15 @@ export default function TabsLayout() {
   const webHeight = Platform.OS === 'web' ? { height: WEB_TAB_BAR_HEIGHT + insets.bottom } : null;
   return (
     <Tabs
+      screenListeners={{ tabPress: () => haptic() }}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.accent,
+        tabBarActiveTintColor: colors.ink,
         tabBarInactiveTintColor: colors.graphite,
         tabBarStyle: {
           backgroundColor: colors.paper,
           borderTopColor: colors.line,
-          borderTopWidth: 1,
+          borderTopWidth: hairline,
           elevation: 0,
           shadowOpacity: 0,
           ...webHeight,

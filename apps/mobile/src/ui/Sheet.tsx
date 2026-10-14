@@ -36,6 +36,7 @@ export function Sheet({ visible, title, closeLabel, onClose, children, padded = 
           style={[styles.sheet, padded && { paddingBottom: insets.bottom + space(16) }]}
           accessibilityViewIsModal
         >
+          <View style={styles.grabber} />
           <Text style={[type.title, styles.title]} accessibilityRole="header">
             {title}
           </Text>
@@ -50,11 +51,12 @@ const styles = StyleSheet.create({
   root: { flex: 1, justifyContent: 'flex-end', backgroundColor: colors.scrim },
   sheet: {
     backgroundColor: colors.surface,
-    borderTopLeftRadius: radius.stage,
-    borderTopRightRadius: radius.stage,
-    paddingTop: space(24),
+    borderTopLeftRadius: radius.sheet,
+    borderTopRightRadius: radius.sheet,
+    paddingTop: space(8),
     maxHeight: '86%',
   },
+  grabber: { alignSelf: 'center', width: 36, height: 5, borderRadius: 3, backgroundColor: colors.line, marginBottom: space(16) },
   title: { paddingHorizontal: space(20), marginBottom: space(12) },
   padded: { paddingHorizontal: space(20), paddingTop: space(4) },
   flush: { flexShrink: 1 },

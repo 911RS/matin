@@ -32,8 +32,6 @@ import { CACHE_MAX_AGE, createQueryClient, dehydrateOptions, persister, wireOnli
 import { useTimezoneSync } from '../src/settings/timezone';
 import { useLocaleSync, useReminderSync } from '../src/settings/useSettingsSync';
 import { colors } from '../src/theme';
-import { TypeProvider } from '../src/ui/typeContext';
-import { useAppFonts } from '../src/ui/useAppFonts';
 import { installWebCss } from '../src/ui/webCss';
 
 initI18n();
@@ -167,19 +165,16 @@ function ConfiguredRoot({
 
 export default function RootLayout() {
   const [mode] = useState(() => getConfig().mode);
-  const fonts = useAppFonts();
   const filesReady = useFilesReady();
   const session = useSession();
   const seeded = useDemoSeed(mode === 'demo');
   const kind = repoKindFor(mode, session);
   const repo = useMemo(() => (kind ? buildRepo(kind) : null), [kind]);
 
-  if (!fonts.ready || !seeded || !filesReady) return null;
+  if (!seeded || !filesReady) return null;
   if (!kind || !repo) return null;
   return (
-    <TypeProvider failed={fonts.failed}>
-      <ConfiguredRoot key={kind} repo={repo} kind={kind} mode={mode} session={session} />
-    </TypeProvider>
+    <ConfiguredRoot key={kind} repo={repo} kind={kind} mode={mode} session={session} />
   );
 }
 

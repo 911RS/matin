@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { colors, radius } from '../theme';
+import { colors, radius, space } from '../theme';
 import { useType } from './typeContext';
 import { FocusRing, useFocusRing } from './focus';
 
@@ -11,7 +11,7 @@ type Props = {
   role?: 'button' | 'radio';
 };
 
-const HIT_SLOP = { top: 4, bottom: 4, left: 0, right: 0 };
+const HIT_SLOP = { top: 6, bottom: 6, left: 0, right: 0 };
 
 export function Chip({ label, selected = false, onPress, accessibilityLabel, role = 'button' }: Props) {
   const type = useType();
@@ -24,13 +24,9 @@ export function Chip({ label, selected = false, onPress, accessibilityLabel, rol
       hitSlop={HIT_SLOP}
       onPress={onPress}
       {...focusProps}
-      style={({ pressed }) => [
-        styles.base,
-        selected && styles.selected,
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [styles.base, selected && styles.selected, pressed && styles.pressed]}
     >
-      <Text style={[type.label, selected && styles.selectedLabel]} numberOfLines={1}>
+      <Text style={[type.label, styles.label, selected && styles.selectedLabel]} numberOfLines={1}>
         {label}
       </Text>
       {focused && <FocusRing radius={radius.round} />}
@@ -40,14 +36,14 @@ export function Chip({ label, selected = false, onPress, accessibilityLabel, rol
 
 const styles = StyleSheet.create({
   base: {
-    height: 36,
-    paddingHorizontal: 14,
+    height: 34,
+    paddingHorizontal: space(16),
     borderRadius: radius.round,
-    borderWidth: 1,
-    borderColor: colors.line,
+    backgroundColor: colors.tile,
     justifyContent: 'center',
   },
-  selected: { backgroundColor: colors.ink, borderColor: colors.ink },
-  pressed: { opacity: 0.85 },
-  selectedLabel: { color: colors.surface },
+  selected: { backgroundColor: colors.ink },
+  pressed: { opacity: 0.8, transform: [{ scale: 0.97 }] },
+  label: { color: colors.ink },
+  selectedLabel: { color: colors.paper },
 });

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import type { LayoutChangeEvent } from 'react-native';
 import { Image } from 'expo-image';
-import { familyTint } from '../theme';
+import { colors, radius } from '../theme';
 import { Stage } from '../ui/Stage';
 
 const PIECES = [
@@ -28,7 +28,6 @@ export function SignInArt({ compact = false }: { compact?: boolean }) {
 
   return (
     <Stage
-      tint={familyTint.navy}
       style={[styles.stage, compact && styles.compact]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
@@ -57,6 +56,6 @@ export function SignInArt({ compact = false }: { compact?: boolean }) {
 }
 
 const styles = StyleSheet.create({
-  stage: { flex: 1, minHeight: 240 },
+  stage: { flex: 1, minHeight: 240, backgroundColor: colors.tile, borderRadius: radius.stage },
   compact: { minHeight: 88 },
 });

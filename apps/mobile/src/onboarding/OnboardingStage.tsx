@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import type { LayoutChangeEvent } from 'react-native';
 import { Image } from 'expo-image';
 import type { ItemRow } from '@tenue/backend';
 import type { Category } from '@tenue/engine';
 import { useItemImage } from '../closet/useItems';
 import { layoutFlatLay } from '../today/flatLay';
-import { colors, familyTint, radius, space } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { colors, radius, space } from '../theme';
+import { useType } from '../ui/typeContext';
 import { Stage } from '../ui/Stage';
 
 type Slot = 'top' | 'bottom' | 'shoes';
@@ -32,6 +34,8 @@ export function OnboardingStage({ items, compact = false }: Props) {
   const [size, setSize] = useState({ width: 0, height: 0 });
   const inset = compact ? space(12) : space(24);
   const chosen = pickSlots(items);
+  const { t } = useTranslation();
+  const type = useType();
 
   const onLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
@@ -46,8 +50,7 @@ export function OnboardingStage({ items, compact = false }: Props) {
 
   return (
     <Stage
-      tint={familyTint.navy}
-      style={compact ? styles.compact : styles.large}
+      style={[styles.card, compact ? styles.compact : styles.large]}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
     >
@@ -70,7 +73,7 @@ export function OnboardingStage({ items, compact = false }: Props) {
                 },
               ]}
             >
-              {item && <Cutout item={item} />}
+              {item ? <Cutout item={item} /> : <Text style={type.eyebrow}>{t(`category.${frame.id}`)}</Text>}
             </View>
           );
         })}
@@ -85,5 +88,13 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   cutout: { width: '100%', height: '100%' },
   slot: { position: 'absolute' },
-  ghost: { borderRadius: radius.tile, backgroundColor: colors.line },
+  card: { backgroundColor: colors.tile, borderRadius: radius.stage },
+  ghost: {
+    borderRadius: radius.tile,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    borderColor: colors.line,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

@@ -29,7 +29,7 @@ export function IconButton({ icon, accessibilityLabel, onPress, disabled = false
         style,
       ]}
     >
-      <Ionicons name={icon} size={22} color={disabled ? colors.graphite : colors.ink} />
+      <Ionicons name={icon} size={20} color={disabled ? colors.graphite : colors.ink} />
       {focused && <FocusRing radius={radius.round} />}
     </Pressable>
   );
@@ -41,10 +41,8 @@ const styles = StyleSheet.create({
     height: size.control,
     borderRadius: radius.round,
     backgroundColor: colors.surface,
-    borderWidth: 1,
-    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pressed: { opacity: 0.85 },
+  pressed: { opacity: 0.8, transform: [{ scale: 0.94 }] },
 });

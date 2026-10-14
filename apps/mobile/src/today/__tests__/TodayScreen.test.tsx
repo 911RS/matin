@@ -135,8 +135,10 @@ describe('TodayScreen', () => {
     const client = await show(OUTFIT);
     expect(screen.getByText('Monday 12')).toBeTruthy();
     expect(screen.getByText('October')).toBeTruthy();
-    expect(screen.getByText('Feels like 9°')).toBeTruthy();
+    expect(screen.getByRole('header', { name: 'Monday, October 12' })).toBeTruthy();
+    expect(screen.getByText('9°')).toBeTruthy();
     expect(screen.getByText('Rain')).toBeTruthy();
+    expect(screen.getByLabelText('Weather for today, Feels like 9°, Rain')).toBeTruthy();
     for (const line of splitReason(outfitReason(OUTFIT_SHAPE, 'en'))) expect(screen.getByText(line)).toBeTruthy();
 
     await fireEvent(screen.getByTestId('outfit-stack'), 'layout', { nativeEvent: { layout: { width: 360, height: 480 } } });
@@ -228,7 +230,8 @@ describe('TodayScreen', () => {
   it('labels the temperature as feels-like, in French too', async () => {
     await i18n.changeLanguage('fr');
     const client = await show(OUTFIT);
-    expect(screen.getByText('Ressenti 9°')).toBeTruthy();
+    expect(screen.getByLabelText(/Ressenti 9°/)).toBeTruthy();
+    expect(screen.getByText('Lundi 12')).toBeTruthy();
     await screen.unmount();
     client.clear();
   });
@@ -245,7 +248,7 @@ describe('TodayScreen', () => {
   it('shows the same temperature in the chip and the reason', async () => {
     const weather = { feelsLikeC: 22.4, rain: false };
     const client = await show({ ...OUTFIT, row: { ...ROW, weather } });
-    expect(screen.getByText('Feels like 23°')).toBeTruthy();
+    expect(screen.getByText('23°')).toBeTruthy();
     expect(screen.getByText('23°C: keep it light')).toBeTruthy();
     await screen.unmount();
     client.clear();

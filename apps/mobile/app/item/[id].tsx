@@ -11,7 +11,7 @@ import { TagEditor } from '../../src/closet/TagEditor';
 import type { EditableTags } from '../../src/closet/TagEditor';
 import { useItem, useItemImage, useItemLabel } from '../../src/closet/useItems';
 import { daysSince, NEVER_WORN, useWearStats } from '../../src/closet/wear';
-import { colors, familyTint, space, swatch } from '../../src/theme';
+import { colors, space, swatch } from '../../src/theme';
 import { TagChips } from '../../src/ui/TagChips';
 import { Button, ConfirmSheet, IconButton, Screen, Stage } from '../../src/ui';
 import { useType } from '../../src/ui/typeContext';
@@ -106,7 +106,7 @@ export default function ItemScreen() {
           </Text>
         </View>
       </View>
-      <Stage tint={familyTint[item.color_family]} style={[styles.stage, { height: Math.round(height * 0.4) }]}>
+      <Stage style={[styles.stage, styles.shelf, { height: Math.round(height * 0.4) }]}>
         {source && (
           <Image
             source={source}
@@ -178,6 +178,7 @@ export default function ItemScreen() {
 }
 
 const styles = StyleSheet.create({
+  shelf: { backgroundColor: colors.tile },
   content: { gap: space(24), paddingBottom: space(24) },
   topBar: { flexDirection: 'row', alignItems: 'center', gap: space(8), paddingTop: space(8) },
   title: { flex: 1 },

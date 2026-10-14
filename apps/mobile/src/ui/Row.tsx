@@ -2,11 +2,10 @@ import { Children, Fragment, isValidElement } from 'react';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { colors, radius, space, tabular } from '../theme';
+import { colors, hairline, radius, space, tabular } from '../theme';
 import { FocusRing, useFocusRing } from './focus';
 import { useType } from './typeContext';
 
-const INSET = space(16);
 
 export function Group({ children }: { children: ReactNode }) {
   const rows = Children.toArray(children).filter(isValidElement);
@@ -97,14 +96,14 @@ export function Row({
 }
 
 const styles = StyleSheet.create({
-  group: { backgroundColor: colors.surface, borderRadius: radius.tile, overflow: 'hidden' },
-  hairline: { height: 1, marginLeft: INSET, backgroundColor: colors.line },
+  group: { backgroundColor: colors.surface, borderRadius: radius.input, overflow: 'hidden' },
+  hairline: { height: hairline, marginLeft: space(16), backgroundColor: colors.line },
   row: {
-    minHeight: 56,
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
     gap: space(12),
-    paddingHorizontal: INSET,
+    paddingHorizontal: space(16),
     paddingVertical: space(12),
   },
   pressed: { backgroundColor: colors.tile },

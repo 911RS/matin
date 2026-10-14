@@ -17,8 +17,9 @@ import { FocusRing, useFocusRing } from '../../src/ui/focus';
 import { useType } from '../../src/ui/typeContext';
 
 const SIDE = space(20);
-const GAP = space(12);
-const FAB = 60;
+const GAP = space(8);
+const FAB = 56;
+const NARROW = 360;
 
 function openAdd() {
   router.push('/add-item');
@@ -34,7 +35,7 @@ function AddButton({ label }: { label: string }) {
       {...focusProps}
       style={({ pressed }) => [styles.fab, pressed && styles.pressed]}
     >
-      <Ionicons name="add" size={30} color={colors.onAccent} />
+      <Ionicons name="add" size={26} color={colors.paper} />
       {focused && <FocusRing radius={radius.round} />}
     </Pressable>
   );
@@ -46,7 +47,7 @@ function EmptyCloset() {
   return (
     <View style={styles.empty}>
       <View style={styles.emptyTile}>
-        <Ionicons name="shirt-outline" size={56} color={colors.graphite} />
+        <Ionicons name="shirt-outline" size={48} color={colors.graphite} />
       </View>
       <Text style={type.title}>{t('closet.empty')}</Text>
       <Button label={t('closet.addFirst')} onPress={openAdd} />
@@ -75,7 +76,8 @@ export default function Closet() {
     family: activeFamily,
     forgotten: forgotten && ready ? { stats, today, timezone } : null,
   });
-  const tileSize = (width - SIDE * 2 - GAP) / 2;
+  const columns = width < NARROW ? 2 : 3;
+  const tileSize = (width - SIDE * 2 - GAP * (columns - 1)) / columns;
 
   const header = (
     <View style={styles.header}>
@@ -144,7 +146,8 @@ export default function Closet() {
       <FlatList
         data={shown}
         keyExtractor={(item) => item.id}
-        numColumns={2}
+        key={columns}
+        numColumns={columns}
         ListHeaderComponent={header}
         ListEmptyComponent={
           items.length === 0 ? (
@@ -186,9 +189,9 @@ export default function Closet() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.paper },
-  list: { paddingHorizontal: SIDE, paddingTop: space(12), paddingBottom: FAB + space(32), gap: GAP },
+  list: { paddingHorizontal: SIDE, paddingTop: space(16), paddingBottom: FAB + space(32), gap: GAP },
   row: { gap: GAP },
-  header: { gap: space(16), marginBottom: space(12) },
+  header: { gap: space(16), marginBottom: space(16) },
   titleRow: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between' },
   count: { color: colors.graphite },
   bleed: { marginHorizontal: -SIDE },
@@ -199,6 +202,9 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     backgroundColor: colors.tile,
     borderRadius: radius.tile,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    borderColor: colors.line,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -211,7 +217,12 @@ const styles = StyleSheet.create({
     width: FAB,
     height: FAB,
     borderRadius: radius.round,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.ink,
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },

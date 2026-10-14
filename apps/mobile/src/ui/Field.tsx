@@ -11,7 +11,7 @@ export function Field({ label, nativeID, style, ...input }: TextInputProps & { l
   const [focused, setFocused] = useState(false);
   return (
     <View style={styles.field}>
-      <Text style={[type.label, styles.fieldLabel]} nativeID={nativeID}>
+      <Text style={[type.caption, styles.fieldLabel]} nativeID={nativeID}>
         {label}
       </Text>
       <TextInput
@@ -36,10 +36,10 @@ const styles = StyleSheet.create({
     height: FIELD_HEIGHT,
     borderRadius: radius.input,
     borderWidth: 1,
-    borderColor: colors.line,
+    borderColor: 'transparent',
     backgroundColor: colors.surface,
     paddingHorizontal: space(16),
     paddingVertical: 0,
   },
-  inputFocused: { borderWidth: 2, borderColor: colors.accent, paddingHorizontal: space(16) - 1 },
+  inputFocused: { borderColor: colors.ink },
 });

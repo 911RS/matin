@@ -38,7 +38,7 @@ describe('Button', () => {
     expect(onPress).not.toHaveBeenCalled();
     expect(button.props.accessibilityState).toEqual(expect.objectContaining({ disabled: true }));
     expect(StyleSheet.flatten(button.props.style)).toEqual(
-      expect.objectContaining({ opacity: 0.5, backgroundColor: colors.surface }),
+      expect.objectContaining({ opacity: 0.5, backgroundColor: colors.tile }),
     );
   });
 
@@ -51,7 +51,21 @@ describe('Button', () => {
     await render(<Button label="Archive" variant="danger" onPress={() => {}} />);
     const button = screen.getByRole('button', { name: 'Archive' });
     expect(StyleSheet.flatten(button.props.style)).toEqual(
-      expect.objectContaining({ backgroundColor: colors.danger, height: 52 }),
+      expect.objectContaining({ backgroundColor: colors.danger, height: 50, borderRadius: 14 }),
     );
+  });
+
+  it('fills the primary variant with ink in a rounded 50 pt button', async () => {
+    await render(<Button label="Wear this" onPress={() => {}} />);
+    const style = StyleSheet.flatten(screen.getByRole('button', { name: 'Wear this' }).props.style);
+    expect(style).toEqual(expect.objectContaining({ backgroundColor: colors.ink, borderRadius: 14, height: 50 }));
+    expect(StyleSheet.flatten(screen.getByText('Wear this').props.style).color).toBe(colors.paper);
+  });
+
+  it('tints the secondary variant instead of outlining it', async () => {
+    await render(<Button label="Library" variant="secondary" onPress={() => {}} />);
+    const style = StyleSheet.flatten(screen.getByRole('button', { name: 'Library' }).props.style);
+    expect(style).toEqual(expect.objectContaining({ backgroundColor: colors.tile, borderRadius: 14 }));
+    expect(StyleSheet.flatten(screen.getByText('Library').props.style).color).toBe(colors.ink);
   });
 });

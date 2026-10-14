@@ -17,7 +17,7 @@
     "android": {
       "package": "com.matinwear.app",
       "adaptiveIcon": {
-        "backgroundColor": "#2B4BDB",
+        "backgroundColor": "#F7F6F2",
         "foregroundImage": "./assets/images/adaptive-icon-foreground.png",
         "monochromeImage": "./assets/images/adaptive-icon-monochrome.png"
       },
@@ -28,7 +28,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#2B4BDB",
+          "backgroundColor": "#F7F6F2",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 288
         }
@@ -53,7 +53,7 @@
         "expo-notifications",
         {
           "icon": "./assets/images/notification-icon.png",
-          "color": "#2B4BDB"
+          "color": "#1F1F1C"
         }
       ],
       [
@@ -82,8 +82,8 @@
       "favicon": "./assets/images/favicon.png",
       "name": "Matin",
       "shortName": "Matin",
-      "themeColor": "#F4F5F3",
-      "backgroundColor": "#F4F5F3"
+      "themeColor": "#F7F6F2",
+      "backgroundColor": "#F7F6F2"
     }
   }
 }

@@ -63,5 +63,5 @@ const styles = StyleSheet.create({
   fill: { flex: 1 },
   dimmed: { opacity: 0.4 },
   badge: { position: 'absolute', top: space(8), right: space(8) },
-  pressed: { opacity: 0.85 },
+  pressed: { opacity: 0.85, transform: [{ scale: 0.97 }] },
 });

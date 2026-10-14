@@ -11,6 +11,7 @@ import { layoutFlatLay } from '../today/flatLay';
 import type { FlatLayPiece } from '../today/flatLay';
 import { colors, radius, space } from '../theme';
 import { FocusRing, useFocusRing } from './focus';
+import { haptic } from './haptics';
 import { useType } from './typeContext';
 import { useReduceMotion } from './useReduceMotion';
 
@@ -132,7 +133,10 @@ function Piece({ item, frame, disabled, readOnly, onSwap }: PieceProps) {
       accessibilityLabel={t('today.swapPiece', { category: label.toLowerCase() })}
       accessibilityState={{ disabled }}
       disabled={disabled}
-      onPress={() => onSwap(item.category)}
+      onPress={() => {
+        haptic();
+        onSwap(item.category);
+      }}
       {...focusProps}
       style={[styles.piece, frameStyle(frame)]}
     >
@@ -188,7 +192,7 @@ export function SlotStack({ categories, missing = [] }: SlotStackProps) {
         const empty = missing.includes(frame.category);
         return (
           <View key={frame.id} style={[styles.slot, empty ? styles.missing : styles.loading, frameStyle(frame, SLOT_SHRINK)]}>
-            {empty && <Text style={[type.label, styles.slotLabel]}>{t(`category.${frame.category}`)}</Text>}
+            {empty && <Text style={type.eyebrow}>{t(`category.${frame.category}`)}</Text>}
           </View>
         );
       })}
@@ -201,7 +205,6 @@ const styles = StyleSheet.create({
   piece: { position: 'absolute' },
   image: { flex: 1 },
   slot: { position: 'absolute', borderRadius: radius.tile, alignItems: 'center', justifyContent: 'center' },
-  loading: { backgroundColor: colors.tile },
-  missing: { backgroundColor: colors.tile, borderWidth: 1.5, borderStyle: 'dashed', borderColor: colors.line },
-  slotLabel: { color: colors.graphite },
+  loading: { borderWidth: 1, borderStyle: 'dashed', borderColor: colors.line },
+  missing: { borderWidth: 1, borderStyle: 'dashed', borderColor: colors.graphite },
 });

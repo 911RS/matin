@@ -8,10 +8,10 @@ import type { ItemRow, OutfitRow } from '@tenue/backend';
 import { useItemImage, useItemLabel } from '../closet/useItems';
 import { ARCHIVED_ITEMS_KEY, historyKey } from '../data/keys';
 import { useRepo } from '../data/RepoProvider';
-import { colors, radius, space } from '../theme';
+import { colors, radius, space, tabular } from '../theme';
 import { inSentence, longDay } from '../today/present';
 import { useDayKey, useProfileTimezone } from '../today/useToday';
-import { IconButton, Screen, stageTint, Tile } from '../ui';
+import { IconButton, Screen, Tile } from '../ui';
 import { FocusRing, useFocusRing } from '../ui/focus';
 import { useType } from '../ui/typeContext';
 import { isoDate, monthGrid } from './monthGrid';
@@ -70,9 +70,8 @@ function Day({ cell, size, worn, isToday, selected, future, onPress }: CellProps
   const { focused, focusProps } = useFocusRing();
   const hero = worn ? heroOf(worn.items) : undefined;
   const source = useItemImage(hero?.image_path ?? null);
-  const tint = worn ? stageTint(worn.items.map((i) => i.color_family), worn.row.weather) : undefined;
   const day = longDay(cell.date, i18n.language);
-  const ring = selected ? colors.accent : isToday ? colors.ink : null;
+  const ring = selected ? colors.ink : null;
   const slop = Math.max(0, Math.ceil((44 - size) / 2));
 
   return (
@@ -88,13 +87,12 @@ function Day({ cell, size, worn, isToday, selected, future, onPress }: CellProps
         styles.cell,
         { width: size, height: size },
         !future && styles.filled,
-        tint ? { backgroundColor: tint } : null,
       ]}
     >
       {worn && source ? (
         <Image source={source} style={styles.cellImage} contentFit="contain" cachePolicy="disk" />
       ) : (
-        <Text style={[type.caption, styles.number, isToday && styles.todayNumber, future && styles.future]}>
+        <Text style={[isToday ? type.label : type.caption, tabular, styles.number, isToday && styles.todayNumber, future && styles.future]}>
           {cell.day}
         </Text>
       )}
@@ -200,12 +198,12 @@ const styles = StyleSheet.create({
   content: { paddingTop: space(12), paddingBottom: space(32), gap: space(24) },
   header: { flexDirection: 'row', alignItems: 'center', gap: space(12) },
   title: { flex: 1 },
-  arrows: { flexDirection: 'row', gap: space(8) },
+  arrows: { flexDirection: 'row', gap: space(4) },
   grid: { gap: GAP },
   week: { flexDirection: 'row', gap: GAP },
   weekday: { textAlign: 'center', paddingBottom: space(4) },
   cell: { borderRadius: radius.cell, alignItems: 'center', justifyContent: 'center' },
-  filled: { backgroundColor: colors.tile },
+  filled: { backgroundColor: colors.surface },
   cellImage: { position: 'absolute', top: space(4), left: space(4), right: space(4), bottom: space(4) },
   number: { textAlign: 'center' },
   todayNumber: { color: colors.ink },

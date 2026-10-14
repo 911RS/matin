@@ -19,7 +19,7 @@ import { useRepo } from '../src/data/RepoProvider';
 import { errorCode } from '../src/photo/errors';
 import { preparePhoto } from '../src/photo/prepare';
 import { warmUpForAdding } from '../src/photo/warmup';
-import { colors, familyTint, radius, space, swatch } from '../src/theme';
+import { colors, radius, space, swatch } from '../src/theme';
 import { Button, IconButton, Stage } from '../src/ui';
 import { onHardwareBack } from '../src/ui/hardwareBack';
 import { useType } from '../src/ui/typeContext';
@@ -50,7 +50,7 @@ function colorHexFor(state: AddState & { step: 'review' }, tags: DraftTags): str
 }
 
 const STAGE_PADDING = space(24);
-const SIDE = space(20);
+const SIDE = space(24);
 
 function fitInside(size: PhotoSize | null, box: PhotoSize): PhotoSize {
   if (!size || size.width <= 0 || size.height <= 0) return box;
@@ -214,7 +214,6 @@ export default function AddItem() {
 
   if (state.step === 'review') {
     const { tags } = state;
-    const tint = tags.colorFamily ? familyTint[tags.colorFamily] : colors.tile;
     const stageHeight = Math.round(height * 0.4);
     const stageBox = { width: width - SIDE * 2 - STAGE_PADDING * 2, height: stageHeight - STAGE_PADDING * 2 };
     const missing = !tags.category ? t('add.categoryRequired') : !tags.colorFamily ? t('add.colorRequired') : null;
@@ -222,7 +221,7 @@ export default function AddItem() {
       <SafeAreaView style={styles.screen} edges={['top', 'bottom', 'left', 'right']}>
         <View style={styles.padded}>{topBar}</View>
         <ScrollView contentContainerStyle={styles.reviewContent} showsVerticalScrollIndicator={false}>
-          <Stage tint={tint} style={[styles.stage, { height: stageHeight }]}>
+          <Stage style={[styles.stage, styles.shelf, { height: stageHeight }]}>
             {state.prepared ? (
               <Image
                 source={{ uri: state.prepared.cutoutUri }}
@@ -320,6 +319,7 @@ export default function AddItem() {
 }
 
 const styles = StyleSheet.create({
+  shelf: { backgroundColor: colors.tile },
   screen: { flex: 1, backgroundColor: colors.paper },
   padded: { paddingHorizontal: SIDE },
   topBar: {
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
   cutout: { alignSelf: 'stretch', flex: 1 },
   original: { borderRadius: radius.tile, overflow: 'hidden' },
   bottomBar: {
-    paddingHorizontal: space(20),
+    paddingHorizontal: space(24),
     paddingTop: space(12),
     paddingBottom: space(8),
     gap: space(8),

@@ -1,43 +1,25 @@
+import { Platform, StyleSheet } from 'react-native';
 import type { TextStyle } from 'react-native';
 import type { ColorFamily } from '@tenue/engine';
 
+const PAPER = '#F7F6F2';
+const INK = '#1F1F1C';
+
 export const colors = {
-  paper: '#F4F5F3',
+  paper: PAPER,
   surface: '#FFFFFF',
-  ink: '#16181A',
-  graphite: '#5F6368',
-  trackOff: '#84888D',
-  line: '#E3E4E0',
-  tile: '#ECEDE9',
-  accent: '#2B4BDB',
-  onAccent: '#FFFFFF',
-  danger: '#C2412D',
-  scrim: 'rgba(22, 24, 26, 0.4)',
+  ink: INK,
+  graphite: '#62615B',
+  trackOff: '#8A8880',
+  line: '#D9D7D0',
+  tile: '#EFEEE9',
+  accent: INK,
+  onAccent: PAPER,
+  danger: '#9A3B2E',
+  scrim: 'rgba(31, 31, 28, 0.35)',
 } as const;
 
-export const familyTint: Record<ColorFamily, string> = {
-  black: '#E4E4E2',
-  white: '#EDEEEA',
-  grey: '#E3E5E6',
-  navy: '#DCE2EE',
-  blue: '#D9E4F7',
-  beige: '#EFE7DA',
-  brown: '#E9DDD3',
-  green: '#DCE8DF',
-  red: '#F3DCD8',
-  pink: '#F5E1E8',
-  yellow: '#F4EDCB',
-  purple: '#E6DFF1',
-  denim: '#DAE3EE',
-  multi: '#ECE6F0',
-};
-
-export const weatherTint = {
-  rain: '#DDE3EA',
-  cold: '#DCE6EF',
-  mild: '#E6EBE3',
-  warm: '#F2E7D9',
-} as const;
+export const hairline = StyleSheet.hairlineWidth;
 
 export const swatch: Record<ColorFamily, string> = {
   black: '#1C1C1C',
@@ -65,47 +47,49 @@ export function space(n: Space): number {
 }
 
 export const size = {
-  control: 52,
+  control: 50,
 } as const;
 
 export const radius = {
-  stage: 28,
-  tile: 20,
-  input: 14,
-  cell: 12,
+  stage: 20,
+  card: 16,
+  tile: 14,
+  control: 14,
+  input: 12,
+  cell: 10,
+  sheet: 20,
   round: 999,
 } as const;
 
-export const fonts = {
-  regular: 'InstrumentSans_400Regular',
-  medium: 'InstrumentSans_500Medium',
-  semibold: 'InstrumentSans_600SemiBold',
-  bold: 'InstrumentSans_700Bold',
-} as const;
+export const SYSTEM_FONT_STACK =
+  '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
 
-type Face = keyof typeof fonts;
-type Weight = '400' | '500' | '600' | '700';
-export type TypeToken = 'display' | 'title' | 'body' | 'bodyStrong' | 'label' | 'caption' | 'tab';
+export type TypeToken = 'display' | 'title' | 'body' | 'bodyStrong' | 'label' | 'caption' | 'eyebrow' | 'tab';
 
-const WEIGHT: Record<Face, Weight> = { regular: '400', medium: '500', semibold: '600', bold: '700' };
-
-const SCALE: Record<TypeToken, { face: Face; style: TextStyle }> = {
-  display: { face: 'semibold', style: { fontSize: 34, lineHeight: 38, letterSpacing: -0.6, color: colors.ink } },
-  title: { face: 'semibold', style: { fontSize: 22, lineHeight: 28, letterSpacing: -0.3, color: colors.ink } },
-  body: { face: 'regular', style: { fontSize: 16, lineHeight: 23, color: colors.ink } },
-  bodyStrong: { face: 'semibold', style: { fontSize: 16, lineHeight: 23, color: colors.ink } },
-  label: { face: 'medium', style: { fontSize: 14, lineHeight: 19, color: colors.ink } },
-  caption: { face: 'regular', style: { fontSize: 13, lineHeight: 18, color: colors.graphite } },
-  tab: { face: 'medium', style: { fontSize: 12, lineHeight: 16, color: colors.graphite } },
+const SCALE: Record<TypeToken, TextStyle> = {
+  display: { fontSize: 34, lineHeight: 41, letterSpacing: 0.37, fontWeight: '700', color: colors.ink },
+  title: { fontSize: 20, lineHeight: 25, letterSpacing: 0.38, fontWeight: '600', color: colors.ink },
+  body: { fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '400', color: colors.ink },
+  bodyStrong: { fontSize: 17, lineHeight: 22, letterSpacing: -0.41, fontWeight: '600', color: colors.ink },
+  label: { fontSize: 15, lineHeight: 20, letterSpacing: -0.24, fontWeight: '500', color: colors.ink },
+  caption: { fontSize: 13, lineHeight: 18, letterSpacing: -0.08, fontWeight: '400', color: colors.graphite },
+  eyebrow: {
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 0.3,
+    fontWeight: '400',
+    textTransform: 'uppercase',
+    color: colors.graphite,
+  },
+  tab: { fontSize: 10, lineHeight: 12, letterSpacing: 0.1, fontWeight: '500', color: colors.graphite },
 };
 
 export type TypeScale = Record<TypeToken, TextStyle>;
 
-export function makeType(fontsFailed: boolean): TypeScale {
+export function makeType(os: string = Platform.OS): TypeScale {
   const out = {} as TypeScale;
   for (const key of Object.keys(SCALE) as TypeToken[]) {
-    const { face, style } = SCALE[key];
-    out[key] = fontsFailed ? { ...style, fontWeight: WEIGHT[face] } : { fontFamily: fonts[face], ...style };
+    out[key] = os === 'web' ? { fontFamily: SYSTEM_FONT_STACK, ...SCALE[key] } : { ...SCALE[key] };
   }
   return out;
 }
