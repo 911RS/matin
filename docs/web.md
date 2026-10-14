@@ -66,12 +66,21 @@ Google sign-in returns to `/auth/callback`. If the provider returns an error, th
 
 ## Hosting
 
-Nothing is deployed from this repo. `public/_headers` is copied into `dist-web` and sets:
+`.github/workflows/pages.yml` deploys `main` to GitHub Pages. `public/_headers` is copied into `dist-web` and sets:
 
 - `/mediapipe/*`, `/_expo/static/*` and `/assets/*`: `public, max-age=31536000, immutable` (versioned or hashed paths).
 - `/index.html`, `/`, `/sw.js` and `/manifest.json`: `no-cache`.
 
 Hosts serve `.wasm` as `application/wasm` by default.
+
+### GitHub Pages
+
+The workflow builds with `EXPO_PUBLIC_BASE_PATH=/<repo name>`, so the app, service worker, manifest and MediaPipe files live under that subfolder (for example `https://911rs.github.io/matin/`). It also sets `WEB_404_FALLBACK=1`, which copies `index.html` to `404.html` so deep links such as `/matin/closet` load the app. GitHub Pages ignores `_headers`.
+
+1. In the repository settings, set Pages > Source to GitHub Actions.
+2. The build runs in guest mode. To change that, add repository variables (Settings > Secrets and variables > Actions > Variables): `EXPO_PUBLIC_DEMO=1` for demo mode, or `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` for sign-in. With sign-in, add `https://911rs.github.io/matin/auth/callback` to the Supabase redirect URLs.
+
+To serve the build from any other subfolder, set `EXPO_PUBLIC_BASE_PATH` when running `build:web`.
 
 ### Cloudflare Pages
 

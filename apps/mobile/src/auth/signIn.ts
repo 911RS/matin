@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
+import { withBase } from '../pwa/basePath';
 
 export type AuthClient = {
   auth: Pick<
@@ -64,7 +65,7 @@ export async function startGoogle(
   if (Platform.OS === 'web') {
     const { error } = await client.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${window.location.origin}${withBase('/auth/callback')}` },
     });
     if (error) throw error;
     return null;

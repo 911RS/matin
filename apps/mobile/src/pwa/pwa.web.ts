@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import { withBase } from './basePath';
 import { installHint } from './install';
 import type { InstallEnv, PwaState } from './install';
 
@@ -94,7 +95,7 @@ export function startPwa(): void {
     window.location.reload();
   });
   navigator.serviceWorker
-    .register('/sw.js')
+    .register(withBase('/sw.js'), { scope: withBase('/') })
     .then((registration) => {
       track(registration);
       checkForUpdateWhenVisible(registration);

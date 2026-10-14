@@ -1,17 +1,20 @@
+const base = (process.env.EXPO_PUBLIC_BASE_PATH ?? '').replace(/\/+$/, '');
+const escaped = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 module.exports = {
   globDirectory: 'dist-web',
   globPatterns: ['**/*.{html,js,css,json,png,ico,ttf,otf,woff,woff2}'],
-  globIgnores: ['_headers', 'sw.js', 'workbox-*.js', 'mediapipe/**'],
+  globIgnores: ['_headers', '404.html', 'sw.js', 'workbox-*.js', 'mediapipe/**'],
   maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
   swDest: 'dist-web/sw.js',
   skipWaiting: false,
   clientsClaim: false,
-  navigateFallback: '/index.html',
-  navigateFallbackDenylist: [/^\/mediapipe\//],
+  navigateFallback: `${base}/index.html`,
+  navigateFallbackDenylist: [new RegExp(`^${escaped}/mediapipe/`)],
   cleanupOutdatedCaches: true,
   runtimeCaching: [
     {
-      urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/mediapipe/'),
+      urlPattern: new RegExp(`^https?://[^/]+${escaped}/mediapipe/`),
       handler: 'CacheFirst',
       options: { cacheName: 'mediapipe-v1', cacheableResponse: { statuses: [200] } },
     },
