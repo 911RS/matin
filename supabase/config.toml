@@ -1,0 +1,4 @@
+project_id = "tenue"
+
+[functions.daily-suggest]
+verify_jwt = false

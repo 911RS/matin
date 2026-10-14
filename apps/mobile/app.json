@@ -1,0 +1,89 @@
+{
+  "expo": {
+    "name": "Matin",
+    "slug": "matin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "matin",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "com.matinwear.app",
+      "usesAppleSignIn": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.matinwear.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#2B4BDB",
+        "foregroundImage": "./assets/images/adaptive-icon-foreground.png",
+        "monochromeImage": "./assets/images/adaptive-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#2B4BDB",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 288
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.0"
+          }
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Matin needs your photos so you can add clothes to your closet.",
+          "cameraPermission": "Matin needs the camera so you can photograph your clothes.",
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#2B4BDB"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Matin uses your location to check the weather for your daily outfit.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "motionUsagePermission": false
+        }
+      ],
+      "expo-apple-authentication",
+      "expo-localization",
+      "expo-web-browser",
+      "expo-font",
+      "./plugins/withNoFocusHighlight",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "web": {
+      "output": "single",
+      "bundler": "metro",
+      "favicon": "./assets/images/favicon.png",
+      "name": "Matin",
+      "shortName": "Matin",
+      "themeColor": "#F4F5F3",
+      "backgroundColor": "#F4F5F3"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.matinwear.photo'
+version = '0.1.0'
+
+android {
+  namespace "com.matinwear.photo"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation 'com.google.android.gms:play-services-mlkit-subject-segmentation:16.0.0-beta1'
+  implementation 'com.google.mlkit:image-labeling:17.0.9'
+  implementation 'androidx.exifinterface:exifinterface:1.4.2'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2'
+
+  testImplementation 'junit:junit:4.13.2'
+}
