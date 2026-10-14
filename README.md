@@ -19,6 +19,12 @@
 
 Matin picks your outfit each morning. You photograph your clothes once, the app cuts each piece out of its background, and every day it suggests an outfit from your closet based on the local weather and what you wore recently. You can swap a piece, shuffle the whole outfit, and mark it as worn. A daily push reminds you at the time you choose.
 
+<p align="center">
+  <img src="docs/screenshots/today.webp" width="250" alt="Today: the suggested outfit on a coloured stage, with the weather and occasion chips">
+  <img src="docs/screenshots/closet.webp" width="250" alt="Closet: every piece as a cut-out, filterable by category and colour">
+  <img src="docs/screenshots/history.webp" width="250" alt="History: a calendar of the outfits worn this month">
+</p>
+
 ## Features
 
 - **Photo to cut-out.** Background removal, dominant colour and labels run on the device (Vision on iOS, ML Kit on Android, MediaPipe on the web). Nothing is uploaded for processing; photos only leave the phone if you sign in to sync.
